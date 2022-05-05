@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/AlinkDemo/alink.iml" filepath="$PROJECT_DIR$/AlinkDemo/alink.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sssc-logger/paperServer.iml" filepath="$PROJECT_DIR$/sssc-logger/paperServer.iml" />
-    </modules>
-  </component>
-</project>

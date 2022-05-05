@@ -88,10 +88,10 @@ public class FtrlHeartPrediction {
         SplitStreamOp spliter = new SplitStreamOp().setFraction(0.5).linkFrom(data);
         StreamOperator train_stream_data = spliter;
         StreamOperator test_stream_data2 = spliter.getSideOutput(0);
-//        CsvSourceStreamOp test_stream_data = new CsvSourceStreamOp()
-//                .setFilePath(MOCK_HEART_DATASET)
-//                .setSchemaStr(schemaStr);
-        KafkaSourceStreamOp serverRequest = MyKafkaUtil.getKafkaConsumer("alink-test-1");
+        CsvSourceStreamOp serverRequest = new CsvSourceStreamOp()
+                .setFilePath(MOCK_HEART_DATASET)
+                .setSchemaStr(schemaStr);
+//        KafkaSourceStreamOp serverRequest = MyKafkaUtil.getKafkaConsumer("alink-test-1");
 
         PipelineModel feature_pipelineModel = PipelineModel.load(FEATURE_PIPELINE_MODEL_FILE);
 
@@ -129,6 +129,7 @@ public class FtrlHeartPrediction {
                 // 用来预测来自client端用户的心脏情况
                 .linkFrom(model, feature_pipelineModel.transform(serverRequest));
         //  预测完之后把消息发送回前端
+        predictResult.print();
         predictResult.link(MyKafkaUtil.getKafkaProducer("alink-test-1"));
         // 用来在线训练的测试集
         predictResult.linkFrom(model, feature_pipelineModel.transform(test_stream_data2));

@@ -7,20 +7,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="paperServer" />
         <module name="flinkRealTime" />
+        <module name="paperServer" />
         <module name="alink" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="alink" target="1.8" />
-      <module name="mall-tiny" target="1.8" />
-      <module name="paperServer" target="1.8" />
+      <module name="flinkReakTime" target="1.8" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="mall-tiny" options="-parameters" />
-    </option>
   </component>
 </project>
