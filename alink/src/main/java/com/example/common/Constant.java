@@ -19,11 +19,11 @@ public class Constant {
 
     public static final String LABELCOLNAME = "HeartDisease";
 
-    public static final String BATCH_HEART_DATASET = "D:\\Datasets\\heart_2020_cleaned.csv";
+    public static final String BATCH_HEART_DATASET = "D:\\Datasets\\paperAn\\heart-batch.csv";
 
-    public static final String STREAM_HEART_DATASET = "D:\\Datasets\\heart_2020_cleaned.csv";
+    public static final String STREAM_HEART_DATASET = "D:\\Datasets\\paperAn\\heart-stream.csv";
 
-    public static final String MOCK_HEART_DATASET = "D:\\Datasets\\mock_heart_dataset.csv";
+    public static final String MOCK_HEART_DATASET = "D:\\Datasets\\paperAn\\mock_heart_dataset.csv";
 
 
 }

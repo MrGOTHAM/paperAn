@@ -88,10 +88,11 @@ public class FtrlHeartPrediction {
         SplitStreamOp spliter = new SplitStreamOp().setFraction(0.5).linkFrom(data);
         StreamOperator train_stream_data = spliter;
         StreamOperator test_stream_data2 = spliter.getSideOutput(0);
-        CsvSourceStreamOp test_stream_data = new CsvSourceStreamOp()
-                .setFilePath(MOCK_HEART_DATASET)
-                .setSchemaStr(schemaStr);
+//        CsvSourceStreamOp test_stream_data = new CsvSourceStreamOp()
+//                .setFilePath(MOCK_HEART_DATASET)
+//                .setSchemaStr(schemaStr);
         KafkaSourceStreamOp serverRequest = MyKafkaUtil.getKafkaConsumer("alink-test-1");
+
         PipelineModel feature_pipelineModel = PipelineModel.load(FEATURE_PIPELINE_MODEL_FILE);
 
         LogisticRegressionTrainBatchOp lr = new LogisticRegressionTrainBatchOp()
