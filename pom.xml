@@ -12,6 +12,7 @@
         <module>flinkRealTime</module>
         <module>alink</module>
         <module>paperServer</module>
+        <module>myAlgorithm</module>
     </modules>
 
 

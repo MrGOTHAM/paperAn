@@ -16,6 +16,9 @@ import com.alibaba.alink.pipeline.Pipeline;
 import com.alibaba.alink.pipeline.PipelineModel;
 import com.alibaba.alink.pipeline.feature.FeatureHasher;
 import com.example.common.MyKafkaUtil;
+import org.apache.flink.table.api.TableSchema;
+
+import java.util.Arrays;
 
 import static com.example.common.Constant.*;
 
@@ -29,6 +32,7 @@ import static com.example.common.Constant.*;
 public class FtrlHeartPrediction {
     String schemaStr;
     String[] selectedColNames;
+    String[] outputCols = new String[]{"HeartDisease","BMI","Smoking","AlcoholDrinking","Stroke","PhysicalHealth","MentalHealth","DiffWalking","Sex","AgeCategory","Race","Diabetic","PhysicalActivity","GenHealth","SleepTime","Asthma","KidneyDisease","SkinCancer"};
     String[] categoryColNames;
     String[] numericalColNames;
     String labelColName;
@@ -124,7 +128,7 @@ public class FtrlHeartPrediction {
         FtrlPredictStreamOp predictResult = new FtrlPredictStreamOp(initModel)
                 .setVectorCol(vecColName)
                 .setPredictionCol("pred")
-                .setReservedCols(new String[]{labelColName})
+                .setReservedCols(outputCols)
                 .setPredictionDetailCol("details")
                 // 用来预测来自client端用户的心脏情况
                 .linkFrom(model, feature_pipelineModel.transform(serverRequest));
@@ -134,23 +138,20 @@ public class FtrlHeartPrediction {
         // 用来在线训练的测试集
         predictResult.linkFrom(model, feature_pipelineModel.transform(test_stream_data2));
 //        predictResult.print();
+        EvalBinaryClassStreamOp evalBinaryClassStreamOp = new EvalBinaryClassStreamOp()
+                .setLabelCol(labelColName)
+                .setPredictionCol("pred")
+                .setPredictionDetailCol("details")
+                .setTimeInterval(10);
+        JsonValueStreamOp json = new JsonValueStreamOp()
+                .setSelectedCol("Data")
+                .setReservedCols(new String[]{"Statistics"})
+                .setOutputCols(new String[]{"Accuracy", "AUC", "ConfusionMatrix"})
+                .setJsonPath("$.Accuracy", "$.AUC", "$.ConfusionMatrix");
         predictResult
-                .link(
-                        new EvalBinaryClassStreamOp()
-                                .setLabelCol(labelColName)
-                                .setPredictionCol("pred")
-                                .setPredictionDetailCol("details")
-                                .setTimeInterval(10)
-                )
-                .link(
-                        new JsonValueStreamOp()
-                                .setSelectedCol("Data")
-                                .setReservedCols(new String[]{"Statistics"})
-                                .setOutputCols(new String[]{"Accuracy", "AUC", "ConfusionMatrix"})
-                                .setJsonPath(new String[]{"$.Accuracy", "$.AUC", "$.ConfusionMatrix"})
-                )
+                .link(evalBinaryClassStreamOp)
+                .link(json)
                 .print();
-
         StreamOperator.execute();
     }
 }

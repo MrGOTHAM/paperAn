@@ -1,4 +1,7 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import util.MyKafkaUtil;
 
@@ -14,9 +17,13 @@ public class Test {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(1);
 
-        DataStreamSource<String> streamSource = env.addSource(MyKafkaUtil.getKafkaConsumer("alink-test-1", "alink_group2"));
+        String sourceTopic = "alink-test-1";
+        String groupId ="alink_group2";
 
+        DataStreamSource<String> streamSource = env.addSource(MyKafkaUtil.getKafkaConsumer(sourceTopic, groupId));
 
+//        {"pred":"No","HeartDisease":" ","details":"{\"No\":\"0.888366449849923\",\"Yes\":\"0.11163355015007703\"}"}
+        SingleOutputStreamOperator<JSONObject> map = streamSource.map(JSON::parseObject);
 
         streamSource.print();
         env.execute();

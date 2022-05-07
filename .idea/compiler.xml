@@ -10,6 +10,7 @@
         <module name="flinkRealTime" />
         <module name="paperServer" />
         <module name="alink" />
+        <module name="myAlgorithm" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
