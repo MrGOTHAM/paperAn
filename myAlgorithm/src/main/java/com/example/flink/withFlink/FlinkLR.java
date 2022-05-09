@@ -16,17 +16,17 @@ import java.util.*;
 
 public class FlinkLR {
     public static void main(String[] args) {
-        final ParameterTool params = ParameterTool.fromArgs(args);
+//        final ParameterTool params = ParameterTool.fromArgs(args);
 
         // set up the execution environment
         final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
         // make parameters available in the web interface
-        env.getConfig().setGlobalJobParameters(params);
+//        env.getConfig().setGlobalJobParameters(params);
 
         // get input data
-        DataSet<String> text = env.readTextFile(params.get("input"));
-
+//        DataSet<String> text = env.readTextFile(params.get("input"));
+        DataSet<String> text = env.readTextFile("D:\\Datasets\\diabetes_bac.txt");
         DataSet<LRinfo> mapResult = text.map(new LRMap());
         GroupReduceOperator<LRinfo, ArrayList<Double>> reduceResult = mapResult.groupBy("groupbyfield").reduceGroup(new LRReduce());
         try {
@@ -35,6 +35,9 @@ public class FlinkLR {
             Map<Integer,Double> sumMap = new TreeMap<Integer,Double>(new Comparator<Integer>() {
                 @Override
                 public int compare(Integer o1, Integer o2) {
+                    // o1 == o2 -> 0
+                    // o1 >  o2 -> 1
+                    // o1 <  o2 -> -1
                     return o1.compareTo(o2);
                 }
             });
@@ -53,7 +56,8 @@ public class FlinkLR {
                 double finalValue = sumValue/groupSize;
                 finalWeight.add(finalValue);
             }
-            env.execute("LogicTask analy");
+            System.out.println(finalWeight);
+//            env.execute("LogicTask analy");
         } catch (Exception e) {
             e.printStackTrace();
         }

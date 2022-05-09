@@ -12,5 +12,5 @@ public class Constant {
     public static String batchDataSet = "D:\\Datasets\\paperAn\\heart-batch.csv";
     public static String streamDataSet = "D:\\Datasets\\paperAn\\heart-stream.csv";
 
-    public static String fakeDataSet = "D:\\Datasets\\diabetes_bac.csv";
+    public static String fakeDataSet = "D:\\Datasets\\diabetes_bac.txt";
 }

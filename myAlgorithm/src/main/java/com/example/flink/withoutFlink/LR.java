@@ -29,7 +29,7 @@ public class LR {
     public static void LogisticTest() {
         // TODO Auto-generated method stub
         CreateDataSet dataSet = new CreateDataSet();
-        dataSet = readFile("testSet.txt");
+        dataSet = readFile(fakeDataSet);
         ArrayList<Double> weights = new ArrayList<Double>();
         weights = gradAscent1(dataSet, dataSet.labels, 150);
         for (int i = 0; i < 3; i++) {
@@ -93,9 +93,9 @@ public class LR {
             if (!classifyVector(testSet.data.get(i), weights).equals(testSet.labels.get(i))) {
                 errorCount++;
             }
-            System.out.println(classifyVector(testSet.data.get(i), weights) + "," + testSet.labels.get(i));
+            System.out.println("这里是结果：：：："+classifyVector(testSet.data.get(i), weights) + "," + testSet.labels.get(i));
         }
-        System.out.println(1.0 * errorCount / testSet.data.size());
+        System.out.println("预测准确度：："+1.0 * errorCount / testSet.data.size());
 
     }
 
@@ -157,6 +157,7 @@ public class LR {
 
         /**
          * error：保存误差
+         * dataIndex：随机抽取数据集的索引集，你也可以按顺序来
          * for循环开始计算，numberIter是参数传进来的计算次数
          * */
         double error = 0.0;
@@ -169,6 +170,7 @@ public class LR {
              * 每一次迭代计算
              * 都要对所有的训练集进行计算
              * 即对m条数据集计算
+             * 算完一行则直接删除一行的索引
              * */
 
             for (int i = 0; i < m; i++) {
@@ -178,7 +180,7 @@ public class LR {
                 dataIndex.remove(randIndex);
 
                 /***
-                 * 这里temp保存的是某一行数据和权值进行相乘（x1,x2,x3,x4,x5....）* (w1,w2,w3,w4,w5)......
+                 * 这里temp保存的是某一行数据和权值进行相乘（x1,x2,x3,x4,x5....）* (w1,w2,w3,w4,w5)......然后结果全部相加
                  * */
                 double temp = 0.0;
                 for (int k = 0; k < n; k++) {
@@ -186,7 +188,7 @@ public class LR {
                 }
 
                 /**
-                 * 将dataMatrixMulWeights：这里其实没必要这样设置，
+                 * 将dataMatrixMulWeights：这里其实没必要这样设置，主要是因为sigmoid函数传的是数组，为了函数复用
                  * 因为temp传到sigmoid函数还是只有一个元素，每次迭代都只有一个元素
                  * 这里可以改成直接传进去，不需要这个变量
                  * */
@@ -194,7 +196,7 @@ public class LR {
                 h = sigmoid(dataMatrixMulweights);
 
                 /**
-                 * sigmoid函数出来后的预测值h.get(0)，和真实数据集的实际值做比较
+                 * sigmoid函数出来后的预测值h.get(0)，和真实数据集的实际值做比较，真实 - sigmoid值
                  * */
                 error = Double.parseDouble(classLabels.get(randIndex)) - h.get(0);
                 /**

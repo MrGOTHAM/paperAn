@@ -29,7 +29,7 @@ public class LRMap implements MapFunction<String,LRinfo> {
 
         lRinfo.setData(list);
         lRinfo.setLabel(temps[temps.length-1]);
-
+        // random.nextInt(10) 随机数
         lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
         return lRinfo;
     }
