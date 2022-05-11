@@ -15,4 +15,6 @@ public class Constant {
     public static String fakeDataSet = "D:\\Datasets\\diabetes_bac.txt";
 
     public static String testDataSet = "D:\\Datasets\\test.txt";
+
+    public static String testDataSet2 = "D:\\Datasets\\test2.txt";
 }

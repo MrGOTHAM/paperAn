@@ -128,18 +128,16 @@ public class LR {
          * */
         int m = dataSet.data.size();
         int n = dataSet.data.get(0).size();
-        double alpha = 0.0;
+        double alpha = 1.0;
         int randIndex = 0;
 
         /**
          * weights：权值
-         * weightstmp：临时权值
          * h：可以不要，就临时保存sigmoid函数后的真是值
          * dataIndex：随机抽取数据集的索引集，你也可以按顺序来
          * dataMatrixMulweights：保存计算出来的值，即数据集和权值相乘的结果
          * */
         ArrayList<Double> weights = new ArrayList<Double>();
-        ArrayList<Double> weightstmp = new ArrayList<Double>();
         ArrayList<Double> h = new ArrayList<Double>();
         ArrayList<Integer> dataIndex = new ArrayList<Integer>();
         ArrayList<Double> dataMatrixMulweights = new ArrayList<Double>();
@@ -150,7 +148,6 @@ public class LR {
          * */
         for (int i = 0; i < n; i++) {
             weights.add(1.0);
-            weightstmp.add(1.0);
         }
 
 
