@@ -1,5 +1,6 @@
 package com.example.flink.withoutFlink;
 
+import com.example.flink.common.Feature;
 import com.example.flink.common.Matrix;
 import java.io.BufferedReader;
 import java.io.File;
@@ -95,7 +96,7 @@ public class LR {
             }
             System.out.println("这里是结果：：：："+classifyVector(testSet.data.get(i), weights) + "," + testSet.labels.get(i));
         }
-        System.out.println("预测准确度：："+1.0 * errorCount / testSet.data.size());
+        System.out.println("预测准确度：："+1.0 * (testSet.data.size() - errorCount) / testSet.data.size());
 
     }
 
@@ -327,6 +328,42 @@ public class LR {
                 }
                 dataSet.data.add(as);
                 dataSet.labels.add(strArr[strArr.length - 1]);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
+        return dataSet;
+    }
+
+    public static CreateDataSet readFileWithoutPlus1(String fileName) {
+        File file = new File(fileName);
+        BufferedReader reader = null;
+        CreateDataSet dataSet = new CreateDataSet();
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String tempString = null;
+            // 一次读入一行，直到读入null为文件结束
+            while ((tempString = reader.readLine()) != null) {
+                // 显示行号
+                String newValue;
+                String[] strArr;
+                if (tempString.contains("No, borderline diabetes")){
+                    newValue = tempString.replace("No, borderline diabetes", "Borderline diabetes");
+                    strArr = newValue.split(",");
+                }else {
+                    strArr = tempString.split(",");
+                }
+                ArrayList<String> as = Feature.getMatrixByChangeFeature(strArr);
+                dataSet.data.add(as);
+                dataSet.labels.add(strArr[0].equals("Yes")?"1":"0");
             }
             reader.close();
         } catch (IOException e) {

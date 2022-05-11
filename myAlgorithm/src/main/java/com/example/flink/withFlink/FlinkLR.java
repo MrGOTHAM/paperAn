@@ -7,26 +7,23 @@ package com.example.flink.withFlink;
  * Time: 20:49
  * Description:
  */
+import com.example.flink.withoutFlink.CreateDataSet;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.GroupReduceOperator;
-import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import java.util.*;
 
+import static com.example.flink.common.Constant.*;
+import static com.example.flink.withoutFlink.LR.*;
+
 public class FlinkLR {
     public static void main(String[] args) {
-//        final ParameterTool params = ParameterTool.fromArgs(args);
 
-        // set up the execution environment
-        final ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
+        final ExecutionEnvironment env1 = ExecutionEnvironment.getExecutionEnvironment();
 
-        // make parameters available in the web interface
-//        env.getConfig().setGlobalJobParameters(params);
-
-        // get input data
-//        DataSet<String> text = env.readTextFile(params.get("input"));
-        DataSet<String> text = env.readTextFile("D:\\Datasets\\diabetes_bac.txt");
+        DataSet<String> text = env1.readTextFile(batchDataSet);
         DataSet<LRinfo> mapResult = text.map(new LRMap());
         GroupReduceOperator<LRinfo, ArrayList<Double>> reduceResult = mapResult.groupBy("groupbyfield").reduceGroup(new LRReduce());
         try {
@@ -57,6 +54,23 @@ public class FlinkLR {
                 finalWeight.add(finalValue);
             }
             System.out.println(finalWeight);
+
+            // predict
+            //创建测试集对象
+            CreateDataSet testData = readFileWithoutPlus1(streamDataSet);// 23 445 34 1  45 56 67 0
+
+            /**
+             * 计算误差
+             * */
+            int errorCount = 0;
+            for (int i = 0; i < testData.data.size(); i++) {
+                if (!classifyVector(testData.data.get(i), finalWeight).equals(testData.labels.get(i))) {
+                    errorCount++;
+                }
+                System.out.println("这里是结果：：：："+classifyVector(testData.data.get(i), finalWeight) + "," + testData.labels.get(i));
+            }
+            System.out.println("预测准确度：："+(testData.data.size() - 1.0 * errorCount) / testData.data.size());
+
 //            env.execute("LogicTask analy");
         } catch (Exception e) {
             e.printStackTrace();

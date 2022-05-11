@@ -14,12 +14,11 @@ import java.util.Random;
 public class Test {
 
     public static void main(String[] args) {
-        Random random = new Random();
-        System.out.println(random.nextInt(10));
 
-        Integer a = 10;
-        Integer b = 20;
-        System.out.println(Integer.compare(30, 20));
+    String a = "wosacg,aaa";
+    String b = a.replace("acg,aaa","an");
+        System.out.println(b);
+
 
 
     }

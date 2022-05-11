@@ -13,4 +13,6 @@ public class Constant {
     public static String streamDataSet = "D:\\Datasets\\paperAn\\heart-stream.csv";
 
     public static String fakeDataSet = "D:\\Datasets\\diabetes_bac.txt";
+
+    public static String testDataSet = "D:\\Datasets\\test.txt";
 }

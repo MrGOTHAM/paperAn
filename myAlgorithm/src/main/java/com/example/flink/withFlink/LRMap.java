@@ -7,6 +7,7 @@ package com.example.flink.withFlink;
  * Time: 20:51
  * Description:
  */
+import com.example.flink.common.Feature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.MapFunction;
 
@@ -22,13 +23,18 @@ public class LRMap implements MapFunction<String,LRinfo> {
         }
 
         Random random = new Random();
-        String[] temps = value.split(",");
+        String newValue;
+        String[] temps;
+        if (value.contains("No, borderline diabetes")){
+            newValue = value.replace("No, borderline diabetes", "Borderline diabetes");
+            temps = newValue.split(",");
+        }else {
+            temps = value.split(",");
+        }
         LRinfo lRinfo = new LRinfo();
-        ArrayList<String> list = new ArrayList<>();
-        for(int i=0;i<temps.length-1;i++) list.add(temps[i]);
-
+        ArrayList<String> list = Feature.getMatrixByChangeFeature(temps);
         lRinfo.setData(list);
-        lRinfo.setLabel(temps[temps.length-1]);
+        lRinfo.setLabel(temps[0].equals("Yes")?"1":"0");
         // random.nextInt(10) 随机数
         lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
         return lRinfo;
