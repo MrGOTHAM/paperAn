@@ -128,7 +128,7 @@ public class LR {
          * */
         int m = dataSet.data.size();
         int n = dataSet.data.get(0).size();
-        double alpha = 1.0;
+        double alpha = 0.0;
         int randIndex = 0;
 
         /**

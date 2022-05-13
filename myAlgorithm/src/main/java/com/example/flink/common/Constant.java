@@ -17,4 +17,6 @@ public class Constant {
     public static String testDataSet = "D:\\Datasets\\test.txt";
 
     public static String testDataSet2 = "D:\\Datasets\\test2.txt";
+
+    public static String modelPath = "model.txt";
 }

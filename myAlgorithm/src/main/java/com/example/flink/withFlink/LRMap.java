@@ -15,6 +15,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class LRMap implements MapFunction<String,LRinfo> {
+    private int i =0;
+    public LRMap(){}
+
+    public LRMap(int i){
+        i = 1;
+    }
 
     @Override
     public LRinfo map(String value) throws Exception {
@@ -36,7 +42,11 @@ public class LRMap implements MapFunction<String,LRinfo> {
         lRinfo.setData(list);
         lRinfo.setLabel(temps[0].equals("Yes")?"1":"0");
         // random.nextInt(10) 随机数
-        lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
+        if (i == 1){
+            lRinfo.setGroupbyfield("logic=="+i);
+        }else {
+            lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
+        }
         return lRinfo;
     }
 }

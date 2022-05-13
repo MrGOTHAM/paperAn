@@ -1,17 +1,16 @@
 package com.example.flink.withFlink;
 
-import com.example.flink.common.Constant;
-import com.example.flink.common.Feature;
-import org.apache.flink.api.java.DataSet;
-import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.streaming.api.datastream.*;
+import com.example.flink.common.Model;
+import com.example.flink.common.MyKafkaUtil;
+import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.ProcessFunction;
+import org.apache.flink.streaming.api.functions.windowing.ProcessAllWindowFunction;
+import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.windows.TimeWindow;
 import org.apache.flink.util.Collector;
 
 import java.util.ArrayList;
-
-import static com.example.flink.common.Constant.batchDataSet;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,39 +22,26 @@ import static com.example.flink.common.Constant.batchDataSet;
 public class FlinkTest {
 
     public static void main(String[] args) throws Exception {
-        ExecutionEnvironment env1 = ExecutionEnvironment.getExecutionEnvironment();
-        DataSet<String> text = env1.readTextFile(batchDataSet);
-
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(1);
-        ArrayList<String> list = new ArrayList<>();
-        DataStreamSource<String> streamSource = env.readTextFile(Constant.testDataSet2);
-
-        DataStreamSource<String> streamSource1 = env.readTextFile(Constant.testDataSet);
-
-
-        streamSource.union(streamSource1).print();
-
-
-//        env.readTextFile("D:\\Datasets\\test.txt").process(new ProcessFunction<String, String>() {
-//            @Override
-//            public void processElement(String s, ProcessFunction<String, String>.Context context, Collector<String> collector) throws Exception {
-//                String[] temps;
-//                String newValue;
-//                if (s.contains("No, borderline diabetes")){
-//                    newValue = s.replace("No, borderline diabetes", "Borderline diabetes");
-//                    temps = newValue.split(",");
-//                }else {
-//                    temps = s.split(",");
-//                }
-//                ArrayList<String> featureResults = Feature.getMatrixByChangeFeature(temps);
-//                for (String ss:featureResults) {
-//                    System.out.println(ss);
-//                }
-//
-//            }
-//        });
-
+        env.setParallelism(2);
+        // 设置时间语义 处理时间
+        env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
+        final ArrayList<String> list = new ArrayList<>();
+        env.socketTextStream("an",8888)
+                .timeWindowAll(Time.seconds(10)).process(new ProcessAllWindowFunction<String, String, TimeWindow>() {
+                    @Override
+                    public void process(ProcessAllWindowFunction<String, String, TimeWindow>.Context context, Iterable<String> elements, Collector<String> out) throws Exception {
+                        for (String element : elements) {
+//                            System.out.println(element);
+                            list.add(element);
+                            Model.saveModela("test.txt",element);
+                        }
+                        for (String s :list){
+                            System.out.print(s+" ");
+                        }
+                        System.out.println();
+                    }
+                });
         env.execute();
 
     }

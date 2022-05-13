@@ -2,6 +2,7 @@ package com.example.flink;
 
 import com.example.flink.withoutFlink.CreateDataSet;
 
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -18,7 +19,13 @@ public class Test {
     String a = "wosacg,aaa";
     String b = a.replace("acg,aaa","an");
         System.out.println(b);
-
+//        Iterable<String> elements = new Iterable<String>() {
+//            @Override
+//            public Iterator<String> iterator() {
+//
+//                return
+//            }
+//        }
 
 
     }
