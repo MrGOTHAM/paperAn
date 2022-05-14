@@ -2,6 +2,8 @@ package com.example.flink.common;
 
 import java.util.ArrayList;
 
+import static com.example.flink.common.Constant.labelIndex;
+
 /**
  * Created with IntelliJ IDEA.
  * User: an
@@ -19,8 +21,11 @@ public class Feature {
         ArrayList<String> list = new ArrayList<>();
         String featureYes = "1";
         String featureNo = "0";
-        // 特征工程相关 第一个是标签
-        for(int i=1;i<temps.length;i++){
+        // 特征工程相关 labelIndex是标签下标
+        for(int i=0;i<temps.length;i++){
+            if (i == labelIndex){
+                continue;
+            }
             // 肤色 white 和 others 分别替换为 1 和 0
             if (i == 10 ){
                 if (temps[i].equals("White")){

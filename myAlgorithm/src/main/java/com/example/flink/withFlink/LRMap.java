@@ -14,13 +14,10 @@ import org.apache.flink.api.common.functions.MapFunction;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class LRMap implements MapFunction<String,LRinfo> {
-    private int i =0;
-    public LRMap(){}
+import static com.example.flink.common.Constant.labelIndex;
 
-    public LRMap(int i){
-        i = 1;
-    }
+public class LRMap implements MapFunction<String,LRinfo> {
+    public LRMap(){}
 
     @Override
     public LRinfo map(String value) throws Exception {
@@ -40,13 +37,9 @@ public class LRMap implements MapFunction<String,LRinfo> {
         LRinfo lRinfo = new LRinfo();
         ArrayList<String> list = Feature.getMatrixByChangeFeature(temps);
         lRinfo.setData(list);
-        lRinfo.setLabel(temps[0].equals("Yes")?"1":"0");
+        lRinfo.setLabel(temps[labelIndex].equals("Yes")?"1":"0");
         // random.nextInt(10) 随机数
-        if (i == 1){
-            lRinfo.setGroupbyfield("logic=="+i);
-        }else {
-            lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
-        }
+        lRinfo.setGroupbyfield("logic=="+random.nextInt(10));
         return lRinfo;
     }
 }

@@ -360,7 +360,7 @@ public class LR {
                 }
                 ArrayList<String> as = Feature.getMatrixByChangeFeature(strArr);
                 dataSet.data.add(as);
-                dataSet.labels.add(strArr[0].equals("Yes")?"1":"0");
+                dataSet.labels.add(strArr[labelIndex].equals("Yes")?"1":"0");
             }
             reader.close();
         } catch (IOException e) {

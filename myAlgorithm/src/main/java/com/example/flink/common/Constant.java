@@ -19,4 +19,6 @@ public class Constant {
     public static String testDataSet2 = "D:\\Datasets\\test2.txt";
 
     public static String modelPath = "model.txt";
+
+    public static final int labelIndex = 0;
 }
