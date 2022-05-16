@@ -24,15 +24,8 @@ public class PredictProcessFunction extends ProcessFunction<String, ArrayList<St
     }
     @Override
     public void processElement(String value, ProcessFunction<String, ArrayList<String>>.Context ctx, Collector<ArrayList<String>> out) throws Exception {
-        String[] temps;
-        String newValue;
-        if (value.contains("No, borderline diabetes")) {
-            newValue = value.replace("No, borderline diabetes", "Borderline diabetes");
-            temps = newValue.split(",");
-        } else {
-            temps = value.split(",");
-        }
-        ArrayList<String> featureResults = Feature.getMatrixByChangeFeature(temps);
+
+        ArrayList<String> featureResults = Feature.getMatrixByChangeFeature(value);
 
 
         String s1 = classifyVector(featureResults, finalWeight);

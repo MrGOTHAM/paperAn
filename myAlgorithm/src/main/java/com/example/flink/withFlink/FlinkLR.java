@@ -33,7 +33,7 @@ public class FlinkLR {
          */
         final ExecutionEnvironment env1 = ExecutionEnvironment.getExecutionEnvironment();
 
-        DataSet<String> text = env1.readTextFile(batchDataSet);
+        DataSet<String> text = env1.readTextFile("D:\\Datasets\\paperAn\\underSampling\\heart-train.csv");
         DataSet<LRinfo> mapResult = text.map(new LRMap());
         GroupReduceOperator<LRinfo, ArrayList<Double>> reduceResult = mapResult.groupBy("groupbyfield").reduceGroup(new LRReduce());
         // 把10个组的数据全部收集起来
@@ -73,7 +73,7 @@ public class FlinkLR {
         /*
          * 验证部分
          */
-        CreateDataSet testData = readFileWithoutPlus1(streamDataSet);
+        CreateDataSet testData = readFileWithoutPlus1("D:\\Datasets\\paperAn\\underSampling\\heart-test.csv");
         ArrayList<String> batchPredict = BatchPredict.predict(Model.loadModel(modelPath), testData);
         Evaluator eva = new Evaluator();
         eva.accuracy(batchPredict, testData.labels);
@@ -88,9 +88,9 @@ public class FlinkLR {
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setParallelism(2);
         // 设置时间语义 处理时间
-        env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
-        env.socketTextStream("an",8888)
-                .timeWindowAll(Time.seconds(10)).process(new TrainProcessFunction());
+//        env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
+//        env.socketTextStream("an",8888)
+//                .timeWindowAll(Time.seconds(10)).process(new TrainProcessFunction());
 
 
         /*

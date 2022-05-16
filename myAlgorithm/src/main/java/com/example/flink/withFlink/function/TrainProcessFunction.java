@@ -37,7 +37,7 @@ public class TrainProcessFunction extends ProcessAllWindowFunction<String, Strin
                 temps = element.split(",");
             }
             LRinfo lRinfo = new LRinfo();
-            ArrayList<String> list = Feature.getMatrixByChangeFeature(temps);
+            ArrayList<String> list = Feature.getMatrixByChangeFeature(element);
             lRinfo.setData(list);
             lRinfo.setLabel(temps[labelIndex].equals("Yes")?"1":"0");
             streamTrainSet.getData().add(lRinfo.getData());

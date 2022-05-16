@@ -17,7 +17,16 @@ import static com.example.flink.common.Constant.labelIndex;
 
 public class Feature {
 
-    public static ArrayList<String> getMatrixByChangeFeature(String[] temps){
+    public static ArrayList<String> getMatrixByChangeFeature(String value){
+        String[] temps;
+        String newValue;
+        if (value.contains("No, borderline diabetes")) {
+            newValue = value.replace("No, borderline diabetes", "Borderline diabetes");
+            temps = newValue.split(",");
+        } else {
+            temps = value.split(",");
+        }
+
         ArrayList<String> list = new ArrayList<>();
         String featureYes = "1";
         String featureNo = "0";

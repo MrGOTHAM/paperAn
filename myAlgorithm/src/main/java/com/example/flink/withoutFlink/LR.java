@@ -117,6 +117,7 @@ public class LR {
      * @param dataSet：训练数据
      * @param classLabels：训练数据的labels
      * @param numberIter：训练次数
+     *                  按照迭代次数停止迭代
      * @return
      */
     public static ArrayList<Double> gradAscent1(Matrix dataSet, ArrayList<String> classLabels, int numberIter) {
@@ -128,7 +129,7 @@ public class LR {
          * */
         int m = dataSet.data.size();
         int n = dataSet.data.get(0).size();
-        double alpha = 0.0;
+        double alpha = 0.001;
         int randIndex = 0;
 
         /**
@@ -170,6 +171,8 @@ public class LR {
              * 即对m条数据集计算
              * 算完一行则直接删除一行的索引
              * */
+            double sum_err ;
+
 
             for (int i = 0; i < m; i++) {
 
@@ -191,7 +194,9 @@ public class LR {
                  * 这里可以改成直接传进去，不需要这个变量
                  * */
                 dataMatrixMulweights.set(0, temp);
+                // 样本预测值
                 h = sigmoid(dataMatrixMulweights);
+
 
                 /**
                  * sigmoid函数出来后的预测值h.get(0)，和真实数据集的实际值做比较，真实 - sigmoid值
@@ -206,6 +211,9 @@ public class LR {
                     weights.set(p, weights.get(p) + tempweight);
                 }
             }
+//            if (i % 10 == 0) {
+//                System.out.println("第" + i + "次迭代的预测误差为:" + sum_err*1.0/samNum);
+//            }
 
         }
         return weights;
@@ -358,7 +366,7 @@ public class LR {
                 }else {
                     strArr = tempString.split(",");
                 }
-                ArrayList<String> as = Feature.getMatrixByChangeFeature(strArr);
+                ArrayList<String> as = Feature.getMatrixByChangeFeature(tempString);
                 dataSet.data.add(as);
                 dataSet.labels.add(strArr[labelIndex].equals("Yes")?"1":"0");
             }

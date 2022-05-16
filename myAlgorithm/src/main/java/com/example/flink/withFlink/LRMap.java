@@ -35,7 +35,7 @@ public class LRMap implements MapFunction<String,LRinfo> {
             temps = value.split(",");
         }
         LRinfo lRinfo = new LRinfo();
-        ArrayList<String> list = Feature.getMatrixByChangeFeature(temps);
+        ArrayList<String> list = Feature.getMatrixByChangeFeature(value);
         lRinfo.setData(list);
         lRinfo.setLabel(temps[labelIndex].equals("Yes")?"1":"0");
         // random.nextInt(10) 随机数
