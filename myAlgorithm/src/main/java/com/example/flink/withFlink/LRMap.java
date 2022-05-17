@@ -8,6 +8,7 @@ package com.example.flink.withFlink;
  * Description:
  */
 import com.example.flink.common.Feature;
+import com.example.flink.common.FeatureAfterRF;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.flink.api.common.functions.MapFunction;
 

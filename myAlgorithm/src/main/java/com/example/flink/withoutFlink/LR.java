@@ -1,6 +1,7 @@
 package com.example.flink.withoutFlink;
 
 import com.example.flink.common.Feature;
+import com.example.flink.common.FeatureAfterRF;
 import com.example.flink.common.Matrix;
 import java.io.BufferedReader;
 import java.io.File;
@@ -129,7 +130,7 @@ public class LR {
          * */
         int m = dataSet.data.size();
         int n = dataSet.data.get(0).size();
-        double alpha = 0.001;
+        double alpha = 0.1;
         int randIndex = 0;
 
         /**
@@ -147,9 +148,28 @@ public class LR {
          * 初始化权值，暂时都保存为1.0
          * 一共有n个权值，因为每一行数据，有n列元素，每个元素应该对应一个权值
          * */
-        for (int i = 0; i < n; i++) {
-            weights.add(1.0);
-        }
+//        for (int i = 0; i < n; i++) {
+////            weights.add(1.0);
+//
+//        }
+        weights.add(0.2);
+        weights.add(2.8);
+        weights.add(0.1);
+        weights.add(7.2);
+        weights.add(1.2);
+        weights.add(1.0);
+        weights.add(4.2);
+        weights.add(1.6);
+        weights.add(18.5);
+        weights.add(2.1);
+        weights.add(7.8);
+        weights.add(0.6);
+        weights.add(18.0);
+        weights.add(0.4);
+        weights.add(0.3);
+        weights.add(1.3);
+        weights.add(1.0);
+
 
 
         dataMatrixMulweights.add(0.0);

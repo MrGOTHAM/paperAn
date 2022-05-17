@@ -28,7 +28,7 @@ public class LRReduce implements GroupReduceFunction<LRinfo, ArrayList<Double>> 
             trainingSet.getLabels().add(lRinfo.getLabel());
         }
         ArrayList<Double> weights = new ArrayList<>();
-        weights = LR.gradAscent1(trainingSet, trainingSet.labels, 500);
+        weights = LR.gradAscent1(trainingSet, trainingSet.labels, 382);
         out.collect(weights);
     }
 }

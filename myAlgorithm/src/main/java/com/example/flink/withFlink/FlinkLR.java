@@ -85,8 +85,8 @@ public class FlinkLR {
         /*
          * 继续以流数据进行训练部分
          */
-        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
-        env.setParallelism(2);
+//        StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+//        env.setParallelism(2);
         // 设置时间语义 处理时间
 //        env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
 //        env.socketTextStream("an",8888)
@@ -96,12 +96,12 @@ public class FlinkLR {
         /*
          * 用流数据进行在线预测部分
          */
-        SingleOutputStreamOperator<ArrayList<String>> streamPredictionDS = env.readTextFile("D:\\Datasets\\test.txt").process(new PredictProcessFunction(Model.loadModel(modelPath)));
+//        SingleOutputStreamOperator<ArrayList<String>> streamPredictionDS = env.readTextFile("D:\\Datasets\\test.txt").process(new PredictProcessFunction(Model.loadModel(modelPath)));
 
         /*
          * 流数据用来验证准确率部分
          */
 
-        env.execute();
+//        env.execute();
     }
 }
